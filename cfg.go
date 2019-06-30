@@ -19,14 +19,19 @@ func AddOnClose(f func()) {
 		signal.Notify(sigchan, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 		go func() {
 			<-sigchan
-			rangeClose()
+			ClosedApp()
 		}()
 	}
 	onCloseFunc = append(onCloseFunc, f)
 }
 
-func rangeClose() {
+// ClosedApp close all date
+func ClosedApp() {
 	println("\nGFULL: Bye...")
+	rangeClose()
+}
+
+func rangeClose() {
 	// recorres las funciones
 	if onCloseEnable == false {
 		for ind := range onCloseFunc {

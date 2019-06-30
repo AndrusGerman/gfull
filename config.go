@@ -1,7 +1,9 @@
 package gfull
 
 import (
+	"encoding/json"
 	"flag"
+	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -33,4 +35,39 @@ func SetConfigFlag(DB *FlagCFG) {
 			DB.DB.Close()
 		}
 	})
+}
+
+// ArrError add
+type ArrError []error
+
+// Add element array errors
+func (ct *ArrError) Add(err error) {
+	if err != nil {
+		*ct = append(*ct, err)
+	}
+}
+
+// Contain : Contain errors
+func (ct *ArrError) Contain() bool {
+	return len(*ct) != 0
+}
+
+// Error : Contain errors
+func (ct ArrError) Error() error {
+	// not error
+	if len(ct) == 0 {
+		return nil
+	}
+	// Add error in array
+	var err []string
+	for _, val := range ct {
+		err = append(err, val.Error())
+	}
+	// Parse error
+	var b, errM = json.Marshal(&err)
+	if errM != nil {
+		return errM
+	}
+	// return error
+	return fmt.Errorf("%s", b)
 }

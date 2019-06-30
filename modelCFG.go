@@ -146,6 +146,9 @@ func SnakeCamelC(valor string) (total string) {
 }
 
 // Migrate one model
-func (ctx *ModelCFG) Migrate(val interface{}) error {
-	return ctx.getSchemaModel(val).AutoMigrate(val).Error
+func (ctx *ModelCFG) Migrate(val ...interface{}) error {
+	if len(val) == 0 {
+		return errors.New("Not Migrate Element")
+	}
+	return ctx.getSchemaModel(val[0]).AutoMigrate(val...).Error
 }
