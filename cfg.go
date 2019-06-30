@@ -19,15 +19,21 @@ func AddOnClose(f func()) {
 		signal.Notify(sigchan, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 		go func() {
 			<-sigchan
-			println("\nGFULL: Bye...")
-			// recorres las funciones
-			for ind := range onCloseFunc {
-				onCloseFunc[ind]()
-			}
-			os.Exit(0)
+			rangeClose()
 		}()
 	}
 	onCloseFunc = append(onCloseFunc, f)
+}
+
+func rangeClose() {
+	println("\nGFULL: Bye...")
+	// recorres las funciones
+	if onCloseEnable == false {
+		for ind := range onCloseFunc {
+			onCloseFunc[ind]()
+		}
+	}
+	os.Exit(0)
 }
 
 // StrToUint : converte string in uint

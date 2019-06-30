@@ -27,7 +27,7 @@ func (ctx *Model) SetID(id string) (err error) {
 }
 
 // NewModelCFG new model cfg
-func NewModelCFG(schema string, dtbase Database) *ModelCFG {
+func NewModelCFG(schema string, dtbase FlagCFG) *ModelCFG {
 	dt := new(ModelCFG).Connect(&dtbase)
 	dt.Schema = schema
 	return dt

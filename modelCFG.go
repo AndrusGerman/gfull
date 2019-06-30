@@ -15,7 +15,7 @@ import (
 // ModelCFG base
 type ModelCFG struct {
 	Schema   string
-	Database *Database
+	Database *FlagCFG
 }
 
 // Load : Get schema by model
@@ -95,9 +95,9 @@ func (ctx *ModelCFG) Delete(model interface{}, where ...interface{}) error {
 }
 
 // Connect to database
-func (ctx *ModelCFG) Connect(dt *Database) *ModelCFG {
+func (ctx *ModelCFG) Connect(dt *FlagCFG) *ModelCFG {
 	var err error
-	ctx.Database, err = dt.Connect()
+	ctx.Database, err = dt.ConnectDB()
 	if err != nil {
 		os.Exit(1)
 	}
@@ -105,7 +105,7 @@ func (ctx *ModelCFG) Connect(dt *Database) *ModelCFG {
 }
 
 // ModelToSnake convert model in snakeCase string
-func ModelToSnake(d *Database, val interface{}) string {
+func ModelToSnake(d *FlagCFG, val interface{}) string {
 	return d.DB.NewScope(val).GetModelStruct().TableName(d.DB)
 }
 

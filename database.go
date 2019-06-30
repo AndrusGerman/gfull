@@ -7,17 +7,18 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// Database Database
-type Database struct {
-	DB         *gorm.DB
-	Config     Config
-	Production bool
+// FlagCFG Database
+type FlagCFG struct {
+	DB           *gorm.DB
+	ConfigDB     ConfigDB
+	ConfigServer ConfigServer
+	Production   bool
 }
 
-// Connect to database
-func (ctx *Database) Connect() (*Database, error) {
+// ConnectDB to database
+func (ctx *FlagCFG) ConnectDB() (*FlagCFG, error) {
 	if ctx.DB == nil {
-		db, err := gorm.Open(ctx.Config.DBDriver, ctx.getConectionData())
+		db, err := gorm.Open(ctx.ConfigDB.DBDriver, ctx.getConectionData())
 		if err != nil {
 			fmt.Println("Error db :" + err.Error())
 			return ctx, err
@@ -28,16 +29,16 @@ func (ctx *Database) Connect() (*Database, error) {
 }
 
 // Migrate one model
-func (ctx *Database) getConectionData() (dt string) {
+func (ctx *FlagCFG) getConectionData() (dt string) {
 	// Get Mode
 	var dbcf DatabaseConnection
 	if ctx.Production {
-		dbcf = ctx.Config.Prod
+		dbcf = ctx.ConfigDB.Prod
 	} else {
-		dbcf = ctx.Config.Dev
+		dbcf = ctx.ConfigDB.Dev
 	}
 	// Set Data for return
-	switch ctx.Config.DBDriver {
+	switch ctx.ConfigDB.DBDriver {
 	case "postgres":
 		dt = fmt.Sprintf("host=%s port=%v user=%v dbname=%v password=%v %v", dbcf.DBHost, 5432, dbcf.DBUser, dbcf.DBName, dbcf.DBPassword, dbcf.DBParam)
 	case "sqlite3":
