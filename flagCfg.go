@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// FlagCFG Database
+// FlagCFG : Config var
 type FlagCFG struct {
 	DB           *gorm.DB
 	ConfigDB     ConfigDB
