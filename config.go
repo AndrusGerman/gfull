@@ -1,7 +1,6 @@
 package gfull
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 
@@ -38,36 +37,26 @@ func SetConfigFlag(DB *FlagCFG) {
 }
 
 // ArrError add
-type ArrError []error
+type ArrError []string
 
 // Add element array errors
 func (ct *ArrError) Add(err error) {
 	if err != nil {
-		*ct = append(*ct, err)
+		*ct = append(*ct, err.Error())
 	}
 }
 
 // Contain : Contain errors
-func (ct *ArrError) Contain() bool {
-	return len(*ct) != 0
+func (ct ArrError) Contain() bool {
+	return len(ct) != 0
 }
 
 // Error : Contain errors
-func (ct ArrError) Error() error {
+func (ct ArrError) Error() string {
 	// not error
 	if len(ct) == 0 {
-		return nil
-	}
-	// Add error in array
-	var err []string
-	for _, val := range ct {
-		err = append(err, val.Error())
-	}
-	// Parse error
-	var b, errM = json.Marshal(&err)
-	if errM != nil {
-		return errM
+		return ""
 	}
 	// return error
-	return fmt.Errorf("%s", b)
+	return fmt.Sprintf("%#v", ct)
 }

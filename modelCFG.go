@@ -3,6 +3,7 @@ package gfull
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 	"strings"
@@ -99,6 +100,7 @@ func (ctx *ModelCFG) Connect(dt *FlagCFG) *ModelCFG {
 	var err error
 	ctx.Database, err = dt.ConnectDB()
 	if err != nil {
+		log.Println("ERROR GFULL: ", err)
 		os.Exit(1)
 	}
 	return ctx
