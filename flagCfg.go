@@ -49,5 +49,6 @@ func (ctx *FlagCFG) getConectionData() (dt string) {
 		fmt.Println("Error driver not compatible")
 		os.Exit(1)
 	}
+	fmt.Println(dt)
 	return dt
 }
