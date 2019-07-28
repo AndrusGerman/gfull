@@ -15,12 +15,6 @@ import (
 type ImageManager struct {
 }
 
-func main() {
-	var img = new(ImageManager)
-	var imagen, _ = img.ConverteBase64ToImage("")
-	img.SaveImagePNG(imagen, "imagen.png")
-}
-
 // ConverteBase64ToImage convert base64 to Image
 func (ImageManager) ConverteBase64ToImage(bs64 string) (image.Image, error) {
 	coI := strings.Index(bs64, ",")
@@ -55,4 +49,14 @@ func (ImageManager) SaveImageJPEG(src image.Image, file string) error {
 	}
 	defer f.Close()
 	return jpeg.Encode(f, src, &jpeg.Options{Quality: 100})
+}
+
+// SaveImageJPEGQuality to format JPEG
+func (ImageManager) SaveImageJPEGQuality(src image.Image, file string, quality int) error {
+	f, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE, 0777)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	return jpeg.Encode(f, src, &jpeg.Options{Quality: quality})
 }
